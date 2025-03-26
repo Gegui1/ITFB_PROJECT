@@ -1,5 +1,6 @@
 import pytest
 import requests
+from jsonschema import validate
 
 
 base_url = "https://dog.ceo/api"
@@ -7,9 +8,15 @@ base_url = "https://dog.ceo/api"
 def test_get_breeds():
     response = requests.get(f"{base_url}/breeds/list/all")
     assert response.status_code == 200
-    data = response.json()
-    assert "message" in data
-    assert isinstance(data["message"], dict)
+    schema = {
+        "type": "object",
+        "properties": {
+            "message": {"type": "object"},
+            "status": {"type": "string"},
+        },
+        "required": ["message", "status"]
+    }
+    validate(instance=response.json(), schema=schema)
 
 
 def test_random_image():
