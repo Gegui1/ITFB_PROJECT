@@ -5,9 +5,6 @@ from jsonschema import validate
 
 base_url = "https://api.openbrewerydb.org/"
 
-
-from jsonschema import validate
-
 def test_breweries_list():
     response = requests.get(f"{base_url}/v1/breweries?per_page=3")
     assert response.status_code == 200
